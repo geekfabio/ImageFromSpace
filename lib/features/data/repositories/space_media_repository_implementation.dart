@@ -10,9 +10,13 @@ class SpaceMediaRepositoryImplementation implements ISpaceMediaRepository {
   SpaceMediaRepositoryImplementation(this.dataSource);
 
   @override
-  Future<Either<Failure, SpaceMediaEntity>> GetSpaceMediaFromDate(
-      DateTime dateTime) {
-    // TODO: implement GetSpaceMediaFromDate
-    throw UnimplementedError();
+  Future<Either<Failure, SpaceMediaEntity>> getSpaceMediaFromDate(
+      DateTime dateTime) async {
+    try {
+      final result = await dataSource.getSpaceMediaFromDate(dateTime);
+      return right(result);
+    } on Exception {
+      return left(ServerFailure());
+    }
   }
 }

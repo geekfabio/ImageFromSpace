@@ -25,12 +25,13 @@ void main() {
       title: "FHAZ");
   test('Should get return data model when call datasource', () async {
     //arrage
-    when(() => dataSource.GetSpaceMediaFromDate(tShortDate))
-        .thenAnswer((_) async => Right(tSpaceMediaModel));
+    when(() => dataSource.getSpaceMediaFromDate(tShortDate))
+        .thenAnswer((_) async => (tSpaceMediaModel));
     //act
-    final result = await repository.GetSpaceMediaFromDate(tShortDate);
+    final result = await repository.getSpaceMediaFromDate(tShortDate);
     //expeted
     expect(result, right(tSpaceMediaModel));
-    verify(() => (dataSource)).called(1);
+
+    verifyZeroInteractions(dataSource);
   });
 }

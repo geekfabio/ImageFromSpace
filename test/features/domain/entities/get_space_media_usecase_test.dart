@@ -27,24 +27,24 @@ void main() {
   final tShortDate = DateTime(2021, 05, 01);
   test('Should get space media from for a give date from the repository',
       () async {
-    when(() => mockMediaRepository.GetSpaceMediaFromDate(tShortDate))
+    when(() => mockMediaRepository.getSpaceMediaFromDate(tShortDate))
         .thenAnswer((_) async => Right<Failure, SpaceMediaEntity>(tSpaceMedia));
 
     final result = await useCase(tShortDate);
     expect(result, Right(tSpaceMedia));
-    verify(() => mockMediaRepository.GetSpaceMediaFromDate(tShortDate))
+    verify(() => mockMediaRepository.getSpaceMediaFromDate(tShortDate))
         .called(1);
   });
 
   //final tServerFailure = NoParams();
   test('Should Failure on get space media ServerFailure', () async {
-    when(() => mockMediaRepository.GetSpaceMediaFromDate(tShortDate))
+    when(() => mockMediaRepository.getSpaceMediaFromDate(tShortDate))
         .thenAnswer(
             (_) async => Left<Failure, SpaceMediaEntity>(ServerFailure()));
 
     final result = await useCase(tShortDate);
     expect(result, Left(ServerFailure()));
-    verify(() => MockSpaceMediaRepository().GetSpaceMediaFromDate(tShortDate))
+    verify(() => mockMediaRepository.getSpaceMediaFromDate(tShortDate))
         .called(1);
   });
 }
