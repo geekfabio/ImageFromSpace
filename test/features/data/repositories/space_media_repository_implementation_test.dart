@@ -5,28 +5,32 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockISpaceMediaSource extends SpaceMediaRepositoryImplementation
-    implements Mock {}
+class MockISpaceMediaDataSource extends Mock implements ISpaceMediaDataSource {}
 
 void main() {
   late SpaceMediaRepositoryImplementation repository;
   late ISpaceMediaDataSource dataSource;
 
   setUp(() {
-    dataSource = MockISpaceMediaSource();
+    dataSource = MockISpaceMediaDataSource();
     repository = SpaceMediaRepositoryImplementation(dataSource);
   });
 
   final tShortDate = DateTime(2021, 05, 01);
   final tSpaceMediaModel = SpaceMediaModel(
-      description:
-          "Should get space media from for a give date from the repository",
+      description: "Should get space media from for a give date source",
       mediaType: "image",
       mediaUrl:
           "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FRB_486265257EDR_F0481570FHAZ00323M_.JPG",
       title: "FHAZ");
   test('Should get return data model when call datasource', () async {
+    //arrage
     when(() => dataSource.GetSpaceMediaFromDate(tShortDate))
         .thenAnswer((_) async => Right(tSpaceMediaModel));
+    //act
+    final result = await repository.GetSpaceMediaFromDate(tShortDate);
+    //expeted
+    expect(result, right(tSpaceMediaModel));
+    verify(() => (dataSource)).called(1);
   });
 }
