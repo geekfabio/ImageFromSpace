@@ -1,3 +1,5 @@
+import 'package:clean_tdd/core/usecases/errors/exceptions.dart';
+import 'package:clean_tdd/core/usecases/errors/failures.dart';
 import 'package:clean_tdd/features/data/datasources/space_media_data_source.dart';
 import 'package:clean_tdd/features/data/models/space_media_model.dart';
 import 'package:clean_tdd/features/data/repositories/space_media_repository_implementation.dart';
@@ -31,7 +33,15 @@ void main() {
     final result = await repository.getSpaceMediaFromDate(tShortDate);
     //expeted
     expect(result, right(tSpaceMediaModel));
+  });
 
-    verifyZeroInteractions(dataSource);
+  test('When Server error trown a Exception', () async {
+    when(() => dataSource.getSpaceMediaFromDate(tShortDate))
+        .thenThrow(ServerException());
+
+    //act
+    final result = await repository.getSpaceMediaFromDate(tShortDate);
+    //expetecd
+    expect(result, left(ServerFailure()));
   });
 }
